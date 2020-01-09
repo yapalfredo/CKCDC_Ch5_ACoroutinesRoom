@@ -38,9 +38,9 @@ class SignupFragment : Fragment() {
         viewModel.signupComplete.observe(this, Observer { isComplete ->
             Toast.makeText(activity, "Signup complete", Toast.LENGTH_SHORT).show()
 
-//            this.findNavController().navigate(SignupFragmentDirections.actionGoToMain())
-            val action = SignupFragmentDirections.actionGoToMain()
-            Navigation.findNavController(signupUsername).navigate(action)
+            this.findNavController().navigate(SignupFragmentDirections.actionGoToMain())
+//            val action = SignupFragmentDirections.actionGoToMain()
+//            Navigation.findNavController(signupUsername).navigate(action)
 
         })
 
@@ -66,10 +66,10 @@ class SignupFragment : Fragment() {
 
     private fun onGotoLogin(v: View) {
 
-//        this.findNavController().navigate(SignupFragmentDirections.actionGoToLogin())
+        this.findNavController().navigate(SignupFragmentDirections.actionGoToLogin())
 
-        val action = SignupFragmentDirections.actionGoToLogin()
-        Navigation.findNavController(v).navigate(action)
+//        val action = SignupFragmentDirections.actionGoToLogin()
+//        Navigation.findNavController(v).navigate(action)
 
     }
 }

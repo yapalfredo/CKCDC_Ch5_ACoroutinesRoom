@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.devtides.coroutinesroom.R
 import com.devtides.coroutinesroom.viewmodel.LoginViewModel
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -37,22 +38,32 @@ class LoginFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.loginComplete.observe(this, Observer { isComplete ->
-
+            Toast.makeText(activity, "Login complete", Toast.LENGTH_SHORT).show()
+            this.findNavController().navigate(LoginFragmentDirections.actionGoToMain())
         })
 
         viewModel.error.observe(this, Observer { error ->
-
-
+            Toast.makeText(activity, "Error: $error", Toast.LENGTH_SHORT).show()
         })
     }
 
     private fun onLogin(v: View) {
-        val action = LoginFragmentDirections.actionGoToMain()
-        Navigation.findNavController(v).navigate(action)
+//        val action = LoginFragmentDirections.actionGoToMain()
+//        Navigation.findNavController(v).navigate(action)
+        val username = loginUsername.text.toString()
+        val password = loginPassword.text.toString()
+
+        if (username.isNullOrEmpty() || password.isNullOrEmpty()) {
+            Toast.makeText(activity, "Please fill all fields", Toast.LENGTH_SHORT).show()
+        } else {
+            viewModel.login(username, password)
+        }
     }
 
-    private fun onGotoSignup(v: View){
-        val action = LoginFragmentDirections.actionGoToSignup()
-        Navigation.findNavController(v).navigate(action)
+    private fun onGotoSignup(v: View) {
+//        val action = LoginFragmentDirections.actionGoToSignup()
+//        Navigation.findNavController(v).navigate(action)
+
+        this.findNavController().navigate(LoginFragmentDirections.actionGoToSignup())
     }
 }
