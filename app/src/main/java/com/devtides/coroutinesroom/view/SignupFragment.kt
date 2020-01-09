@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.devtides.coroutinesroom.R
 import com.devtides.coroutinesroom.viewmodel.SignupViewModel
 import kotlinx.android.synthetic.main.fragment_signup.*
@@ -34,21 +36,40 @@ class SignupFragment : Fragment() {
 
     private fun observeViewModel() {
         viewModel.signupComplete.observe(this, Observer { isComplete ->
+            Toast.makeText(activity, "Signup complete", Toast.LENGTH_SHORT).show()
+
+//            this.findNavController().navigate(SignupFragmentDirections.actionGoToMain())
+            val action = SignupFragmentDirections.actionGoToMain()
+            Navigation.findNavController(signupUsername).navigate(action)
 
         })
 
         viewModel.error.observe(this, Observer { error ->
-
+            Toast.makeText(activity, "Error: $error", Toast.LENGTH_SHORT).show()
         })
     }
 
-    private fun onSignup(v: View){
-        val action = SignupFragmentDirections.actionGoToMain()
-        Navigation.findNavController(v).navigate(action)
+    private fun onSignup(v: View) {
+//        val action = SignupFragmentDirections.actionGoToMain()
+//        Navigation.findNavController(v).navigate(action)
+
+        val username = signupUsername.text.toString()
+        val password = signupPassword.text.toString()
+        val info = otherInfo.text.toString()
+
+        if (username.isNullOrEmpty() || password.isNullOrEmpty() || info.isNullOrEmpty()) {
+            Toast.makeText(activity, "Please fill all fields", Toast.LENGTH_SHORT).show()
+        } else {
+            viewModel.signup(username, password, info)
+        }
     }
 
     private fun onGotoLogin(v: View) {
+
+//        this.findNavController().navigate(SignupFragmentDirections.actionGoToLogin())
+
         val action = SignupFragmentDirections.actionGoToLogin()
         Navigation.findNavController(v).navigate(action)
+
     }
 }
